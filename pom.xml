@@ -8,12 +8,20 @@
         <version>3.3.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.xk</groupId>
     <artifactId>xk-RPC</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
     <name>xk-RPC</name>
     <description>xk-RPC</description>
     <url/>
+    <modules>
+        <module>consumer</module>
+        <module>provider</module>
+
+    </modules>
     <licenses>
         <license/>
     </licenses>
@@ -28,6 +36,25 @@
     </scm>
     <properties>
         <java.version>17</java.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <encoding>UTF-8</encoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <spring-boot.version>2.5.2</spring-boot.version>
+        <rpc.version>1.0.0</rpc.version>
+        <netty.version>4.1.65.Final</netty.version>
+        <lombok.version>1.18.24</lombok.version>
+        <logback-classic.version>1.2.11</logback-classic.version>
+        <curator.version>4.0.0</curator.version>
+        <gson.version>2.8.9</gson.version>
+        <hessian.version>4.0.65</hessian.version>
+        <kryo.version>4.0.2</kryo.version>
+        <protostuff.version>1.8.0</protostuff.version>
+        <junit.version>3.8.1</junit.version>
+        <tomcat.version>9.0.22</tomcat.version>
+        <cglib.version>3.1</cglib.version>
+        <nacos.version>2.1.1</nacos.version>
     </properties>
     <dependencies>
         <dependency>
@@ -38,6 +65,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>${spring-boot.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
