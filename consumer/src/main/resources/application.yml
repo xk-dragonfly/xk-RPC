@@ -1,0 +1,15 @@
+server:
+  port: 8881
+rpc:
+  client:
+    load-balance: random
+    serialization: PROTOSTUFF
+    transport: netty
+    registry: zookeeper
+    registry-addr: 172.26.140.42:2181
+    timeout: 5000
+
+# ???????????
+logging:
+  level:
+    com.wxy.rpc: info
