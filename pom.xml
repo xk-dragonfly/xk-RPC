@@ -13,6 +13,9 @@
     <modules>
         <module>consumer</module>
         <module>provider</module>
+        <module>rpc-client</module>
+        <module>rpc-server</module>
+        <module>rpc-core</module>
 
     </modules>
     <licenses>
