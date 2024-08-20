@@ -1,11 +1,10 @@
-# xk-RPC
-# Distributed RPC System
+# Distributed xk-RPC System
 
 ![Java](https://img.shields.io/badge/Java-17%2B-blue)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-green)
-![Netty](https://img.shields.io/badge/Netty-4.1.68.Final-red)
-![Zookeeper](https://img.shields.io/badge/Zookeeper-3.7.0-yellow)
-![Nacos](https://img.shields.io/badge/Nacos-1.4.2-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5.2-green)
+![Netty](https://img.shields.io/badge/Netty-4.1.65.Final-red)
+![Zookeeper](https://img.shields.io/badge/Zookeeper-3.7.1-yellow)
+![Nacos](https://img.shields.io/badge/Nacos-2.1.1-orange)
 ![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen)
 
 A distributed RPC (Remote Procedure Call) system implemented using **Spring Boot**, **Netty**, and **Zookeeper**. The system allows for service registration and discovery, enabling efficient communication between distributed services. The system supports customizable components, with **Zookeeper** for service registration (which can be replaced by **Nacos**) and **Netty** for communication (which can be switched to the **HTTP** protocol).
