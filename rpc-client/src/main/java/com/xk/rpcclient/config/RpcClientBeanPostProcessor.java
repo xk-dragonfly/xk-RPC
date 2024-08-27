@@ -2,6 +2,7 @@ package com.xk.rpcclient.config;
 
 import com.xk.rpcclient.annotation.RpcClient;
 import com.xk.rpcclient.proxy.ClientProxyFactory;
+import com.xk.rpccore.RpcException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
@@ -48,7 +49,7 @@ public class RpcClientBeanPostProcessor implements BeanPostProcessor {
                     // 设置域的值为代理对象
                     field.set(bean, proxy);
                 } catch (ClassNotFoundException | IllegalAccessException e) {
-                    throw new RuntimeException(String.format("Failed to obtain proxy object, the type of field %s is %s, " +
+                    throw new RpcException(String.format("Failed to obtain proxy object, the type of field %s is %s, " +
                             "and the specified loaded proxy type is %s.", field.getName(), field.getClass(), clazz), e);
                 }
             }

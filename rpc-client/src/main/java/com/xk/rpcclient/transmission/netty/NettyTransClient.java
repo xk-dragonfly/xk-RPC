@@ -1,6 +1,7 @@
 package com.xk.rpcclient.transmission.netty;
 
 import com.xk.rpcclient.transmission.TransClient;
+import com.xk.rpccore.RpcException;
 import com.xk.rpccore.netcommon.RequestMetadata;
 import com.xk.rpccore.protocol.RpcMessage;
 import io.netty.bootstrap.Bootstrap;
@@ -76,7 +77,7 @@ public class NettyTransClient implements TransClient {
                 log.debug("The client has successfully connected to server [{}]!", inetSocketAddress.toString());
                 completableFuture.complete(future.channel());
             } else {
-                throw new RuntimeException(String.format("The client failed to connect to [%s].", inetSocketAddress.toString()));
+                throw new RpcException(String.format("The client failed to connect to [%s].", inetSocketAddress.toString()));
             }
         });
         // 等待 future 完成返回结果
