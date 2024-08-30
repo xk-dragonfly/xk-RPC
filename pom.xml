@@ -5,31 +5,20 @@
 
     <groupId>com.xk</groupId>
     <artifactId>xk-RPC</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>xk-RPC</name>
     <url>http://maven.apache.org</url>
     <modules>
-        <module>consumer</module>
-        <module>provider</module>
+        <module>common</module>
+        <module>rpc-core</module>
         <module>rpc-client</module>
         <module>rpc-server</module>
-        <module>rpc-core</module>
-
+        <module>consumer</module>
+        <module>provider</module>
     </modules>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    
     <properties>
         <java.version>17</java.version>
 
@@ -52,21 +41,23 @@
         <cglib.version>3.1</cglib.version>
         <nacos.version>2.1.1</nacos.version>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>${spring-boot.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <pluginManagement>

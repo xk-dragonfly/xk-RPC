@@ -1,4 +1,4 @@
-package com.xk.rpccore;
+package com.xk.rpccore.exception;
 
 /**
  * @author xk

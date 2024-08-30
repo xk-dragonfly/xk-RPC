@@ -5,40 +5,35 @@
     <parent>
         <groupId>com.xk</groupId>
         <artifactId>xk-RPC</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <groupId>com.xk</groupId>
     <artifactId>provider</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
     <name>provider</name>
     <url>http://maven.apache.org</url>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+    
     <properties>
         <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <rpc.version>1.0.0</rpc.version>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-            <version>${spring-boot.version}</version>
+            <groupId>com.xk</groupId>
+            <artifactId>rpc-server</artifactId>
+            <version>${rpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xk</groupId>
+            <artifactId>rpc-core</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.xk</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -46,19 +41,13 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.xk</groupId>
-            <artifactId>rpc-server</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
