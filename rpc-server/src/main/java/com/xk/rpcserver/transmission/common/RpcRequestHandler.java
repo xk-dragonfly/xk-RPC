@@ -1,6 +1,6 @@
 package com.xk.rpcserver.transmission.common;
 
-import com.xk.rpccore.RpcException;
+import com.xk.rpccore.exception.RpcException;
 import com.xk.rpccore.netcommon.RpcRequest;
 import com.xk.rpcserver.cache.LocalServiceCache;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +14,7 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 public class RpcRequestHandler {
-    /**
-     * 处理 RpcRequest
-     *
-     * @param request rpc request 对象
-     * @return 返回方法调用结果
-     * @throws Exception 反射调用方法失败，抛出异常
-     */
+    
     public Object handleRpcRequest(RpcRequest request) throws Exception {
         // 反射调用 RpcRequest 请求指定的方法
         // 获取请求服务实例

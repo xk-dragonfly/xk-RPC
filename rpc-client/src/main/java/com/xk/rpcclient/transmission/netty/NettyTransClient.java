@@ -1,7 +1,7 @@
 package com.xk.rpcclient.transmission.netty;
 
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.RpcException;
+import com.xk.rpccore.exception.RpcException;
 import com.xk.rpccore.netcommon.RequestMetadata;
 import com.xk.rpccore.protocol.RpcMessage;
 import io.netty.bootstrap.Bootstrap;

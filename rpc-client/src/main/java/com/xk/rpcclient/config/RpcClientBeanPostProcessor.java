@@ -2,7 +2,7 @@ package com.xk.rpcclient.config;
 
 import com.xk.rpcclient.annotation.RpcClient;
 import com.xk.rpcclient.proxy.ClientProxyFactory;
-import com.xk.rpccore.RpcException;
+import com.xk.rpccore.exception.RpcException;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 
