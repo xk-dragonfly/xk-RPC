@@ -25,6 +25,23 @@ A distributed RPC (Remote Procedure Call) system implemented using **Spring Boot
 - **Zookeeper** (or **Nacos** if preferred)
 - **Netty** (or HTTP if preferred)
 
+#### ⚠️ Warning: JDK Version Compatibility
+
+If you are using **JDK 9 or higher**, you must set the following JVM parameter **before starting the `provider` module**:
+
+```bash
+--add-opens java.base/java.lang=ALL-UNNAMED
+```  
+
+This is necessary to avoid the following error:
+
+```
+java.lang.reflect.InaccessibleObjectException: Unable to make field 'detailMessage' accessible
+```
+
+The error occurs when accessing the `detailMessage` field of the `Throwable` class via reflection. Starting from Java 9, the JVM introduced a modular system that restricts access to certain classes and fields. Setting the above parameter ensures compatibility by allowing reflective access.
+
+
 ### Installation
 
 1. **Clone the repository**:
@@ -51,7 +68,7 @@ A distributed RPC (Remote Procedure Call) system implemented using **Spring Boot
 
 3. **Build and Run the Application**:
 
-   Use Maven or Gradle to build and start the `consumer` and `provider` modules:
+   Use Maven to build and start the `consumer` and `provider` modules:
 
     ```bash
     # Start the Provider module
@@ -60,7 +77,7 @@ A distributed RPC (Remote Procedure Call) system implemented using **Spring Boot
     mvn spring-boot:run
     ```
 
-   or
+   and
 
     ```bash
     # Start the Consumer module
@@ -82,11 +99,34 @@ A distributed RPC (Remote Procedure Call) system implemented using **Spring Boot
 - **Service Discovery**: Services can discover other registered services by querying Zookeeper or Nacos.
 - **Remote Procedure Call**: The client can invoke methods on remote services as if they were local, using Netty or HTTP for communication.
 
-### Architecture Overview
 
-- **Service Provider**: Registers itself with the service registry (Zookeeper/Nacos) and listens for incoming RPC requests.
-- **Service Consumer**: Discovers available services from the registry and sends RPC requests.
-- **Service Registry**: Maintains the list of active services and their locations, facilitating service discovery.
+### Project Structure
+
+This project is a Java-based implementation of an RPC (Remote Procedure Call) system. Below is an overview of the directory structure and the purpose of each module:
+
+#### `rpc-core`
+This module contains the core functionalities of the RPC system, including:
+- **RPC message design**: Definitions of the message structure used for communication.
+- **Message encoding and decoding**: Mechanisms to serialize and deserialize messages.
+- **Service registration and discovery**: Managing the availability of services for clients.
+- **Serialization**: Converting objects into a format suitable for transmission.
+- **Load balancing**: Strategies to distribute workload across multiple servers efficiently.
+
+#### `rpc-client`
+This module is responsible for the client-side operations, including:
+- **Client proxy**: Dynamic proxy generation to simplify remote method invocation.
+- **Communication mechanisms**: Handling the transport layer for sending and receiving RPC messages.
+
+#### `rpc-server`
+This module handles server-side operations, including:
+- **Message processing**: Logic to decode incoming messages, invoke appropriate methods, and return responses.
+
+#### `consumer`
+The `consumer` module simulates the client, showcasing how to initiate RPC calls. It provides an example of how end-users interact with the system to invoke remote services.
+
+#### `provider`
+The `provider` module defines the server-side implementation of specific remote methods. It demonstrates how services are registered and made available for RPC clients.
+
 
 ### Contributing
 
