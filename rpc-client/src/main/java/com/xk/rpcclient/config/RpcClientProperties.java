@@ -15,20 +15,20 @@ public class RpcClientProperties {
     
     private String serialization;
 
-    private String loadbalance;
+    private String loadBalance;
 
-    private String registry;
+    private String register;
 
-    private String registryAddr;
+    private String registerAddr;
 
     private Integer timeout;
 
     public RpcClientProperties() {
-        this.loadbalance = "random";
+        this.loadBalance = "random";
         this.serialization = "HESSIAN";
         this.transmission = "netty";
-        this.registry = "zookeeper";
-        this.registryAddr = "127.0.0.1:2181";
+        this.register = "zookeeper";
+        this.registerAddr = "127.0.0.1:2181";
         this.timeout = 5000;
     }
     

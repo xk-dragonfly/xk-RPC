@@ -32,6 +32,11 @@ public @interface RpcClient {
     String loadbalance() default "";
 
     /**
+     * Service mock name, use interface name + Mock if not set
+     */
+    String mock() default "";
+
+    /**
      * 服务调用超时时间
      */
     int timeout() default 0;

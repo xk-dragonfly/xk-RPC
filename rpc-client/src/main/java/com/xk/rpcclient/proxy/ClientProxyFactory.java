@@ -2,7 +2,7 @@ package com.xk.rpcclient.proxy;
 
 import com.xk.rpcclient.config.RpcClientProperties;
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.discover.ServiceDiscover;
+import com.xk.rpccore.discovery.ServiceDiscover;
 import com.xk.rpccore.util.ServiceUtil;
 import org.springframework.cglib.proxy.Enhancer;
 

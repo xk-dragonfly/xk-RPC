@@ -4,7 +4,7 @@ package com.xk.rpcserver.transmission;
  * @author xk
  * @date 2024/8/20--22:28
  */
-public interface TransServer {
+public interface RpcServer {
 
     void start(Integer port);
 }

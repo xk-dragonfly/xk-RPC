@@ -1,0 +1,2 @@
+json=com.xk.rpccore.serialization.json.JsonSerialization
+jdk=com.xk.rpccore.serialization.jdk.JdkSerialization

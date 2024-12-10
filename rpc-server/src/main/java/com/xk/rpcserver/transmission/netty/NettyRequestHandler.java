@@ -1,9 +1,9 @@
 package com.xk.rpcserver.transmission.netty;
 
+import com.xk.rpccore.constant.ProtocolConstants;
 import com.xk.rpccore.exception.RpcException;
 import com.xk.rpccore.constant.MessageStatus;
 import com.xk.rpccore.constant.MessageType;
-import com.xk.rpccore.constant.TransConstants;
 import com.xk.rpccore.factory.SingletonFactory;
 import com.xk.rpccore.netcommon.RpcRequest;
 import com.xk.rpccore.netcommon.RpcResponse;
@@ -13,6 +13,8 @@ import com.xk.rpcserver.transmission.common.RpcRequestHandler;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,22 +36,23 @@ public class NettyRequestHandler extends SimpleChannelInboundHandler<RpcMessage>
         this.rpcRequestHandler = SingletonFactory.getInstance(RpcRequestHandler.class);
     }
 
-
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcMessage rpcMessage) throws Exception {
-        threadPool.execute(() -> {
+    protected void channelRead0(ChannelHandlerContext ctx, RpcMessage msg) throws Exception {
+        threadPool.submit(() -> {
             try {
                 RpcMessage responseRpcMessage = new RpcMessage();
-                MessageHeader header = rpcMessage.getHeader();
-                MessageType messageType = MessageType.parseByType(header.getMessageType());
-                if (messageType == MessageType.HEARTBEAT_REQUEST) {
+                MessageHeader header = msg.getHeader();
+                MessageType type = MessageType.parseByType(header.getMessageType());
+                log.debug("The message received by the server is: {}", msg.getBody());
+                // 如果是心跳检测请求信息
+                if (type == MessageType.HEARTBEAT_REQUEST) {
                     header.setMessageType(MessageType.HEARTBEAT_RESPONSE.getType());
                     header.setMessageStatus(MessageStatus.SUCCESS.getCode());
                     // 设置响应头部信息
                     responseRpcMessage.setHeader(header);
-                    responseRpcMessage.setBody(TransConstants.PONG);
+                    responseRpcMessage.setBody(ProtocolConstants.PONG);
                 } else { // 处理 Rpc 请求信息
-                    RpcRequest request = (RpcRequest) rpcMessage.getBody();
+                    RpcRequest request = (RpcRequest) msg.getBody();
                     RpcResponse response = new RpcResponse();
                     // 设置头部消息类型
                     header.setMessageType(MessageType.RESPONSE.getType());
@@ -69,15 +72,39 @@ public class NettyRequestHandler extends SimpleChannelInboundHandler<RpcMessage>
                     responseRpcMessage.setHeader(header);
                     responseRpcMessage.setBody(response);
                 }
-                log.debug("responseRpcMessage: {}.", responseRpcMessage);
-                // 将结果写入，传递到下一个处理器
-                channelHandlerContext.writeAndFlush(responseRpcMessage).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException(e);
-            } finally {
-                ReferenceCountUtil.release(rpcMessage);
-            }
 
+                ctx.writeAndFlush(responseRpcMessage).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+            } finally {
+                // 确保 ByteBuf 被释放，防止发生内存泄露
+                ReferenceCountUtil.release(msg);
+            }
         });
+    }
+
+    /**
+     * 用户自定义事件，当触发读空闲时，自动关闭【客户端channel】连接
+     *
+     * @param ctx ctx
+     * @param evt evt
+     * @throws Exception exception
+     */
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            IdleState state = ((IdleStateEvent) evt).state();
+            if (state == IdleState.READER_IDLE) {
+                log.warn("idle check happen, so close the connection.");
+                ctx.close();
+            }
+        } else {
+            super.userEventTriggered(ctx, evt);
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        log.error("server catch exception");
+        cause.printStackTrace();
+        ctx.close();
     }
 }

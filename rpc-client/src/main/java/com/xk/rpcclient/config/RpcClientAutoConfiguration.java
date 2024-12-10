@@ -3,8 +3,8 @@ package com.xk.rpcclient.config;
 import com.xk.rpcclient.proxy.ClientProxyFactory;
 import com.xk.rpcclient.transmission.TransClient;
 import com.xk.rpcclient.transmission.netty.NettyTransClient;
-import com.xk.rpccore.discover.ServiceDiscover;
-import com.xk.rpccore.discover.zookeeper.ZookeeperServiceDiscovery;
+import com.xk.rpccore.discovery.ServiceDiscover;
+import com.xk.rpccore.discovery.zookeeper.ZookeeperServiceDiscovery;
 import com.xk.rpccore.loadbalance.LoadBalance;
 import com.xk.rpccore.loadbalance.impl.RandomLoadBalance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +39,16 @@ public class RpcClientAutoConfiguration {
     @Primary
     @ConditionalOnMissingBean
     @ConditionalOnBean(LoadBalance.class)
-    @ConditionalOnProperty(prefix = "rpc.client", name = "registry", havingValue = "zookeeper", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "rpc.client", name = "register", havingValue = "zookeeper", matchIfMissing = true)
     public ServiceDiscover zookeeperServiceDiscovery(@Autowired LoadBalance loadBalance) {
-        return new ZookeeperServiceDiscovery(rpcClientProperties.getRegistryAddr(), loadBalance);
+        return new ZookeeperServiceDiscovery(rpcClientProperties.getRegisterAddr(), loadBalance);
     }
 
 
     @Bean(name = "rpcClient")
     @Primary
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = "rpc.client", name = "transport", havingValue = "netty", matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "rpc.client", name = "transmission", havingValue = "netty", matchIfMissing = true)
     public TransClient nettyRpcClient() {
         return new NettyTransClient();
     }
@@ -57,7 +57,7 @@ public class RpcClientAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ServiceDiscover.class, TransClient.class})
-    public ClientProxyFactory clientStubProxyFactory(@Autowired ServiceDiscover serviceDiscover,
+    public ClientProxyFactory clientProxyFactory(@Autowired ServiceDiscover serviceDiscover,
                                                      @Autowired TransClient transClient,
                                                      @Autowired RpcClientProperties rpcClientProperties) {
         return new ClientProxyFactory(serviceDiscover, transClient, rpcClientProperties);

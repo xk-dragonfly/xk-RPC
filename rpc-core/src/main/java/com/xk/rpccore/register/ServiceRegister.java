@@ -1,11 +1,13 @@
 package com.xk.rpccore.register;
 
+import com.xk.rpccore.extension.SPI;
 import com.xk.rpccore.netcommon.ServiceInfo;
 
 /**
  * @author xk
  * @date 2024/8/20--20:28
  */
+@SPI
 public interface ServiceRegister {
     
     //注册/重新注册一个服务信息到 注册中心

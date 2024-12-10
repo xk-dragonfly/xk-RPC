@@ -5,7 +5,7 @@ import com.xk.rpccore.register.ServiceRegister;
 import com.xk.rpccore.util.ServiceUtil;
 import com.xk.rpcserver.annotation.RpcService;
 import com.xk.rpcserver.cache.LocalServiceCache;
-import com.xk.rpcserver.transmission.TransServer;
+import com.xk.rpcserver.transmission.RpcServer;
 import com.xk.rpcserver.transmission.common.RpcServerProperties;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +22,13 @@ import org.springframework.boot.CommandLineRunner;
 public class RpcServerBeanPostProcessor implements BeanPostProcessor, CommandLineRunner {
     private final ServiceRegister serviceRegister;
 
-    private final TransServer transServer;
+    private final RpcServer rpcServer;
 
     private final RpcServerProperties properties;
     
-    public RpcServerBeanPostProcessor(ServiceRegister serviceRegister, TransServer transServer,RpcServerProperties properties) {
+    public RpcServerBeanPostProcessor(ServiceRegister serviceRegister, RpcServer rpcServer, RpcServerProperties properties) {
         this.serviceRegister = serviceRegister;
-        this.transServer = transServer;
+        this.rpcServer = rpcServer;
         this.properties = properties;
     }
 
@@ -70,9 +70,9 @@ public class RpcServerBeanPostProcessor implements BeanPostProcessor, CommandLin
 
     @Override
     public void run(String... args) throws Exception {
-        new Thread(() -> transServer.start(properties.getPort())).start();
+        new Thread(() -> rpcServer.start(properties.getPort())).start();
         log.info("Rpc server [{}] start, the appName is {}, the port is {}",
-                transServer, properties.getAppName(), properties.getPort());
+                rpcServer, properties.getAppName(), properties.getPort());
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 // 当服务关闭之后，将服务从 注册中心 上清除（关闭连接）

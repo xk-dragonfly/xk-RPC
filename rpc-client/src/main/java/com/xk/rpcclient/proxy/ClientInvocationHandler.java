@@ -2,12 +2,13 @@ package com.xk.rpcclient.proxy;
 
 import com.xk.rpcclient.config.RpcClientProperties;
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.discover.ServiceDiscover;
+import com.xk.rpccore.discovery.ServiceDiscover;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
+ * JDK动态代理，处理通过代理对象调用的方法，将这些方法的调用转发给远程服务进行实际的 RPC 调用
  * @author xk
  * @date 2024/8/19--23:43
  */

@@ -2,7 +2,7 @@ package com.xk.rpcclient.proxy;
 
 import com.xk.rpcclient.config.RpcClientProperties;
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.discover.ServiceDiscover;
+import com.xk.rpccore.discovery.ServiceDiscover;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 import org.springframework.cglib.proxy.Callback;
@@ -10,6 +10,7 @@ import org.springframework.cglib.proxy.Callback;
 import java.lang.reflect.Method;
 
 /**
+ * CGLIB动态代理，拦截代理对象的方法调用，并在方法调用时执行远程服务的调用逻辑
  * @author xk
  * @date 2024/8/19--23:46
  */

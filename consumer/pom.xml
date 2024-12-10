@@ -35,7 +35,18 @@
             <artifactId>common</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.xk</groupId>
+            <artifactId>rpc-client</artifactId>
+            <version>${rpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xk</groupId>
+            <artifactId>rpc-core</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

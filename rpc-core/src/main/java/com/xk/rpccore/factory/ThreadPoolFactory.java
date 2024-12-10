@@ -22,6 +22,6 @@ public class ThreadPoolFactory {
                 threadPoolConfig.getMaximumPoolSize(),
                 threadPoolConfig.getKeepAliveTime(),
                 threadPoolConfig.getTimeUnit(),
-                threadPoolConfig.getBlockingQueue());
+                threadPoolConfig.getWorkQueue());
     }
 }

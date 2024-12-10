@@ -1,6 +1,6 @@
 package com.xk.rpcclient.transmission;
 
-import com.xk.rpccore.netcommon.RequestMetadata;
+import com.xk.rpcclient.transmission.common.RequestMetadata;
 import com.xk.rpccore.protocol.RpcMessage;
 
 /**

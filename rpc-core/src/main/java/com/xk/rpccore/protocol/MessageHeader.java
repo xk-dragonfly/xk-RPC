@@ -1,5 +1,8 @@
 package com.xk.rpccore.protocol;
 
+import com.xk.rpccore.constant.MessageType;
+import com.xk.rpccore.constant.ProtocolConstants;
+import com.xk.rpccore.constant.SerializationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageHeader {
-    
+
     /**
      * 4字节 魔数
      */
@@ -50,5 +53,19 @@ public class MessageHeader {
      */
     private int length;
 
-
+    /**
+     * 根据输入的序列化算法构造一个 MessageHeader 对象
+     *
+     * @param serializeName 序列化算法名称
+     * @return 构造指定序列化算法的默认协议头对象
+     */
+    public static MessageHeader build(String serializeName) {
+        return MessageHeader.builder()
+                .magicNum(ProtocolConstants.MAGIC_NUM)
+                .version(ProtocolConstants.VERSION)
+                .serializerType(SerializationType.parseByName(serializeName).getType())
+                .messageType(MessageType.REQUEST.getType())
+                .sequenceId(ProtocolConstants.getSequenceId()) // 添加唯一 ID 生成
+                .build();
+    }
 }

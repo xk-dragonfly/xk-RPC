@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import java.lang.reflect.Field;
 
 /**
+ * 将标有RpcClient注解的属性设置为对应的代理对象
  * @author xk
  * @date 2024/8/19--23:02
  */
@@ -25,9 +26,9 @@ public class RpcClientBeanPostProcessor implements BeanPostProcessor {
         Field[] fields = bean.getClass().getDeclaredFields();
         // 遍历所有属性
         for (Field field : fields) {
-            // 判断是否被 RpcReference 注解标注
+            // 判断是否被 RpcClient 注解标注
             if (field.isAnnotationPresent(RpcClient.class)) {
-                // 获得 RpcReference 注解
+                // 获得 RpcClient 注解
                 RpcClient rpcReference = field.getAnnotation(RpcClient.class);
                 // 默认类为属性当前类型
                 // filed.class = java.lang.reflect.Field

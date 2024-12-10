@@ -1,7 +1,7 @@
 package com.xk.rpcclient.transmission.http;
 
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.netcommon.RequestMetadata;
+import com.xk.rpcclient.transmission.common.RequestMetadata;
 import com.xk.rpccore.netcommon.RpcResponse;
 import com.xk.rpccore.protocol.RpcMessage;
 

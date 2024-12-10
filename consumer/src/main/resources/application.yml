@@ -2,13 +2,12 @@ server:
   port: 8881
 rpc:
   client:
+    transmission: netty
+    serialization: JSON
     load-balance: random
-    serialization: PROTOSTUFF
-    transport: netty
-    registry: zookeeper
-    registry-addr: 172.26.134.157:2181
+    register: zookeeper
+    register-addr: 127.0.0.1:2181
     timeout: 5000
-
 logging:
   level:
     com.xk.rpc: info

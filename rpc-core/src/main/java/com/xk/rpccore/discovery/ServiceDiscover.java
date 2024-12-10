@@ -1,5 +1,6 @@
-package com.xk.rpccore.discover;
+package com.xk.rpccore.discovery;
 
+import com.xk.rpccore.extension.SPI;
 import com.xk.rpccore.netcommon.RpcRequest;
 import com.xk.rpccore.netcommon.ServiceInfo;
 
@@ -10,6 +11,7 @@ import java.util.List;
  * @author xk
  * @date 2024/8/19--23:35
  */
+@SPI
 public interface ServiceDiscover {
     /**
      * 进行服务发现

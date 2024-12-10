@@ -3,16 +3,21 @@ package com.xk.rpccore.constant;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 协议常量类
+ *
  * @author xk
- * @date 2024/8/27--19:46
+ * @version 1.0
+ * @ClassName ProtocolConstant
+ * @Date 2024/12/4 17:32
  */
-public class TransConstants {
+public class ProtocolConstants {
+
     private static final AtomicInteger ai = new AtomicInteger();
 
     /**
      * 魔数，用来第一时间判断是否无效数据包
      */
-    public static final byte[] MAGIC_NUM = new byte[]{(byte) 'x', (byte) 'r', (byte) 'p', (byte) 'c'};
+    public static final byte[] MAGIC_NUM = new byte[]{(byte) 'X', (byte) 'r', (byte) 'p', (byte) 'c'};
 
     public static final byte VERSION = 1;
 
@@ -24,4 +29,5 @@ public class TransConstants {
         // todo: 实现原子操作
         return ai.getAndIncrement();
     }
+
 }

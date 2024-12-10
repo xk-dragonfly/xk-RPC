@@ -2,7 +2,7 @@ package com.xk.rpcserver.config;
 
 import com.xk.rpccore.register.ServiceRegister;
 import com.xk.rpccore.register.zookeeper.ZookeeperServiceRegister;
-import com.xk.rpcserver.transmission.TransServer;
+import com.xk.rpcserver.transmission.RpcServer;
 import com.xk.rpcserver.transmission.common.RpcServerProperties;
 import com.xk.rpcserver.transmission.netty.NettyServer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class RpcServerAutoConfiguration {
     @Primary
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "rpc.server", name = "register", havingValue = "zookeeper", matchIfMissing = true)
-    public ZookeeperServiceRegister zookeeperServiceRegister() {
+    public ServiceRegister zookeeperServiceRegister() {
         return new ZookeeperServiceRegister(properties.getRegisterAddr());
     }
 
@@ -37,19 +37,19 @@ public class RpcServerAutoConfiguration {
     @Primary
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "rpc.server", name = "transmission", havingValue = "netty", matchIfMissing = true)
-    public TransServer nettyRpcServer() {
+    public RpcServer nettyRpcServer() {
         return new NettyServer();
     }
 
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean({ServiceRegister.class, TransServer.class})
+    @ConditionalOnBean({ServiceRegister.class, RpcServer.class})
     public RpcServerBeanPostProcessor rpcServerBeanPostProcessor(@Autowired ServiceRegister serviceRegister,
-                                                                 @Autowired TransServer transServer,
+                                                                 @Autowired RpcServer rpcServer,
                                                                  @Autowired RpcServerProperties properties) {
 
-        return new RpcServerBeanPostProcessor(serviceRegister, transServer, properties);
+        return new RpcServerBeanPostProcessor(serviceRegister, rpcServer, properties);
     }
     
 }
