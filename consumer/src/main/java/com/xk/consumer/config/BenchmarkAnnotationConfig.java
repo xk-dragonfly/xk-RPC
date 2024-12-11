@@ -16,10 +16,8 @@ import java.util.Properties;
 /**
  * 性能测试配置类
  *
- * @author 
- * @version 1.0
- * @ClassName BenchmarkAnnotationConfig
- * @since 2024/8/17--15:00
+ * @author xk
+ * @date 2024/8/17--15:00
  */
 @ComponentScan("com.xk")
 @Configuration

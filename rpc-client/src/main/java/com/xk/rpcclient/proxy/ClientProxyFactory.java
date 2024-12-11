@@ -2,7 +2,8 @@ package com.xk.rpcclient.proxy;
 
 import com.xk.rpcclient.config.RpcClientProperties;
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.discovery.ServiceDiscover;
+import com.xk.rpccore.discover.ServiceDiscover;
+import com.xk.rpccore.retry.RetryStrategy;
 import com.xk.rpccore.util.ServiceUtil;
 import org.springframework.cglib.proxy.Enhancer;
 
@@ -32,10 +33,16 @@ public class ClientProxyFactory {
      */
     private final RpcClientProperties properties;
 
-    public ClientProxyFactory(ServiceDiscover discover, TransClient transClient, RpcClientProperties properties) {
+    /**
+     * 重试策略
+     */
+    private final RetryStrategy retryStrategy;
+
+    public ClientProxyFactory(ServiceDiscover discover, TransClient transClient, RpcClientProperties properties, RetryStrategy retryStrategy) {
         this.discover = discover;
         this.transClient = transClient;
         this.properties = properties;
+        this.retryStrategy = retryStrategy;
     }
 
     /**
@@ -51,7 +58,7 @@ public class ClientProxyFactory {
 
                 return Proxy.newProxyInstance(clazz.getClassLoader(),
                         new Class[]{clazz}, // 注意，这里的接口是 clazz 本身（即，要代理的实现类所实现的接口）
-                        new ClientInvocationHandler(discover, transClient, properties, serviceName));
+                        new ClientInvocationHandler(discover, transClient, properties, serviceName,retryStrategy));
             } else { // 使用 CGLIB 动态代理
                 // 创建动态代理增加类
                 Enhancer enhancer = new Enhancer();
@@ -60,7 +67,7 @@ public class ClientProxyFactory {
                 // 设置被代理类
                 enhancer.setSuperclass(clazz);
                 // 设置方法拦截器
-                enhancer.setCallback(new ClientMethodInterceptor(discover, transClient, properties, serviceName));
+                enhancer.setCallback(new ClientMethodInterceptor(discover, transClient, properties, serviceName,retryStrategy));
                 // 创建代理类
                 return enhancer.create();
             }

@@ -1,11 +1,11 @@
-package com.xk.rpccore.discovery.nacos;
+package com.xk.rpccore.discover.nacos;
 
 import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingFactory;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.listener.NamingEvent;
 
-import com.xk.rpccore.discovery.ServiceDiscover;
+import com.xk.rpccore.discover.ServiceDiscover;
 import com.xk.rpccore.exception.RpcException;
 import com.xk.rpccore.loadbalance.LoadBalance;
 import com.xk.rpccore.netcommon.RpcRequest;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * @see com.alibaba.nacos.api.naming.pojo.Instance
  */
 @Slf4j
-public class NacosServiceDiscovery implements ServiceDiscover {
+public class NacosServiceDiscover implements ServiceDiscover {
     /**
      * Nacos 命名服务
      */
@@ -52,7 +52,7 @@ public class NacosServiceDiscovery implements ServiceDiscover {
      * @param registerAddr nacos服务地址，例如 localhost:8848
      * @param loadBalance  负载均衡算法
      */
-    public NacosServiceDiscovery(String registerAddr, LoadBalance loadBalance) {
+    public NacosServiceDiscover(String registerAddr, LoadBalance loadBalance) {
         try {
             this.loadBalance = loadBalance;
             this.namingService = NamingFactory.createNamingService(registerAddr);

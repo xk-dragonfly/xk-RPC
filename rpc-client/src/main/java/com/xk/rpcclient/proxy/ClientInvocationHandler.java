@@ -2,7 +2,8 @@ package com.xk.rpcclient.proxy;
 
 import com.xk.rpcclient.config.RpcClientProperties;
 import com.xk.rpcclient.transmission.TransClient;
-import com.xk.rpccore.discovery.ServiceDiscover;
+import com.xk.rpccore.discover.ServiceDiscover;
+import com.xk.rpccore.retry.RetryStrategy;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -33,17 +34,23 @@ public class ClientInvocationHandler implements InvocationHandler {
      */
     private final String serviceName;
 
+    /**
+     * 重试策略
+     */
+    private final RetryStrategy retryStrategy;
 
-    public ClientInvocationHandler(ServiceDiscover serviceDiscover, TransClient transClient, RpcClientProperties properties, String serviceName) {
+
+    public ClientInvocationHandler(ServiceDiscover serviceDiscover, TransClient transClient, RpcClientProperties properties, String serviceName, RetryStrategy retryStrategy) {
         this.serviceDiscover = serviceDiscover;
         this.transClient = transClient;
         this.properties = properties;
         this.serviceName = serviceName;
+        this.retryStrategy = retryStrategy;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 执行远程方法调用
-        return RemoteMethodCall.remoteCall(serviceDiscover, transClient, serviceName, properties, method, args);
+        return RemoteMethodCall.remoteCall(serviceDiscover, transClient, serviceName, properties, retryStrategy, method, args);
     }
 }

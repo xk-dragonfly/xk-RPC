@@ -5,7 +5,7 @@
  * @version 1.0
  * @ClassName package-info
  * @see com.xk.rpccore.codec.RpcMessageCodec
- * @see com.xk.rpccore.discovery.ServiceDiscover
+ * @see com.xk.rpccore.discover.ServiceDiscover
  * @see com.xk.rpccore.loadbalance.LoadBalance
  * @see com.xk.rpccore.serialization.Serialization
  * @since 2024/8/29 22:00

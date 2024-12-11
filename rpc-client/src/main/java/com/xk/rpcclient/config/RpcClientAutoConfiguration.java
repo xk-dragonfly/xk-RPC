@@ -3,10 +3,12 @@ package com.xk.rpcclient.config;
 import com.xk.rpcclient.proxy.ClientProxyFactory;
 import com.xk.rpcclient.transmission.TransClient;
 import com.xk.rpcclient.transmission.netty.NettyTransClient;
-import com.xk.rpccore.discovery.ServiceDiscover;
-import com.xk.rpccore.discovery.zookeeper.ZookeeperServiceDiscovery;
+import com.xk.rpccore.discover.ServiceDiscover;
+import com.xk.rpccore.discover.zookeeper.ZookeeperServiceDiscover;
 import com.xk.rpccore.loadbalance.LoadBalance;
 import com.xk.rpccore.loadbalance.impl.RandomLoadBalance;
+import com.xk.rpccore.retry.RetryStrategy;
+import com.xk.rpccore.retry.impl.RandomRetryStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,17 +37,25 @@ public class RpcClientAutoConfiguration {
         return new RandomLoadBalance();
     }
 
-    @Bean(name = "serviceDiscovery")
+    @Bean(name = "retryStrategy")
+    @Primary
+    @ConditionalOnMissingBean // 不指定 value 则值默认为当前创建的类
+    @ConditionalOnProperty(prefix = "rpc.client", name = "retryStrategy", havingValue = "randomRetryStrategy", matchIfMissing = true)
+    public RetryStrategy randomRetryStrategy() {
+        return new RandomRetryStrategy(0,2000,3);
+    }
+
+    @Bean(name = "serviceDiscover")
     @Primary
     @ConditionalOnMissingBean
     @ConditionalOnBean(LoadBalance.class)
     @ConditionalOnProperty(prefix = "rpc.client", name = "register", havingValue = "zookeeper", matchIfMissing = true)
     public ServiceDiscover zookeeperServiceDiscovery(@Autowired LoadBalance loadBalance) {
-        return new ZookeeperServiceDiscovery(rpcClientProperties.getRegisterAddr(), loadBalance);
+        return new ZookeeperServiceDiscover(rpcClientProperties.getRegisterAddr(), loadBalance);
     }
 
 
-    @Bean(name = "rpcClient")
+    @Bean(name = "transClient")
     @Primary
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "rpc.client", name = "transmission", havingValue = "netty", matchIfMissing = true)
@@ -59,8 +69,9 @@ public class RpcClientAutoConfiguration {
     @ConditionalOnBean({ServiceDiscover.class, TransClient.class})
     public ClientProxyFactory clientProxyFactory(@Autowired ServiceDiscover serviceDiscover,
                                                      @Autowired TransClient transClient,
-                                                     @Autowired RpcClientProperties rpcClientProperties) {
-        return new ClientProxyFactory(serviceDiscover, transClient, rpcClientProperties);
+                                                     @Autowired RpcClientProperties rpcClientProperties,
+                                                     @Autowired RetryStrategy retryStrategy) {
+        return new ClientProxyFactory(serviceDiscover, transClient, rpcClientProperties,retryStrategy);
     }
 
     @Bean

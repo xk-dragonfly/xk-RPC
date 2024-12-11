@@ -1,7 +1,7 @@
-package com.xk.rpccore.discovery.zookeeper;
+package com.xk.rpccore.discover.zookeeper;
 
 import com.xk.rpccore.exception.RpcException;
-import com.xk.rpccore.discovery.ServiceDiscover;
+import com.xk.rpccore.discover.ServiceDiscover;
 import com.xk.rpccore.loadbalance.LoadBalance;
 import com.xk.rpccore.netcommon.RpcRequest;
 import com.xk.rpccore.netcommon.ServiceInfo;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @date 2024/8/27--20:41
  */
 @Slf4j
-public class ZookeeperServiceDiscovery implements ServiceDiscover {
+public class ZookeeperServiceDiscover implements ServiceDiscover {
 
     private static final int SESSION_TIMEOUT = 60 * 1000;
 
@@ -60,7 +60,7 @@ public class ZookeeperServiceDiscovery implements ServiceDiscover {
      * 构造函数 ZookeeperServiceDiscovery 接收 registerAddr（Zookeeper 注册中心地址）和 loadBalance（负载均衡策略）作为参数
      * 初始化 Zookeeper 客户端并启动服务发现，通过 ServiceDiscoveryBuilder 创建服务注册中心对象 serviceDiscovery，并启动服务发现
      */
-    public ZookeeperServiceDiscovery(String registryAddress, LoadBalance loadBalance) {
+    public ZookeeperServiceDiscover(String registryAddress, LoadBalance loadBalance) {
         try {
             this.loadBalance = loadBalance;
 

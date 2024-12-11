@@ -1,5 +1,6 @@
 package com.xk.rpcclient.config;
 
+import com.xk.rpccore.retry.RetryStrategy;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -22,6 +23,8 @@ public class RpcClientProperties {
     private String registerAddr;
 
     private Integer timeout;
+    
+    private String retryStrategy;
 
     public RpcClientProperties() {
         this.loadBalance = "random";
@@ -30,6 +33,7 @@ public class RpcClientProperties {
         this.register = "zookeeper";
         this.registerAddr = "127.0.0.1:2181";
         this.timeout = 5000;
+        this.retryStrategy = "randomRetryStrategy";
     }
     
 }

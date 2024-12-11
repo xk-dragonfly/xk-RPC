@@ -1,4 +1,4 @@
-package com.xk.rpccore.discovery;
+package com.xk.rpccore.discover;
 
 import com.xk.rpccore.extension.SPI;
 import com.xk.rpccore.netcommon.RpcRequest;

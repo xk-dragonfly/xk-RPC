@@ -1,0 +1,2 @@
+zookeeper=com.xk.rpccore.discover.zookeeper.ZookeeperServiceDiscover
+nacos=com.xk.rpccore.discover.nacos.NacosServiceDiscover
