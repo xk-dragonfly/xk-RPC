@@ -13,6 +13,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.ssl.SslContext;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,10 @@ public class NettyServer implements RpcServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            // 加载 SSL/TLS 配置
+                            SslContext sslContext = ServerSslContext.createServerSslContext();
+                            // 在 ChannelPipeline 中添加 SslHandler
+                            ch.pipeline().addLast(sslContext.newHandler(ch.alloc()));
                             // 30s内没有收到客户端的请求就关闭连接，会触发一个 IdleState#READER_IDLE 事件
                             ch.pipeline().addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
                             ch.pipeline().addLast(new RpcFrameDecoder());
