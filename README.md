@@ -1,5 +1,7 @@
 # 🚀 Distributed xk-RPC System
 
+English | [中文](README_cn.md)
+
 ![Java](https://img.shields.io/badge/Java-17%2B-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5.2-green)
 ![Netty](https://img.shields.io/badge/Netty-4.1.65.Final-red)
