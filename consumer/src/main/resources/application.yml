@@ -9,6 +9,7 @@ rpc:
     register-addr: 127.0.0.1:2181
     timeout: 5000
     retry-strategy: randomRetryStrategy
+    enable-ssl: false
 logging:
   level:
     com.xk.rpc: info

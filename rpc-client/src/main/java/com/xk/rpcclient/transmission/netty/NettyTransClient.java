@@ -1,5 +1,6 @@
 package com.xk.rpcclient.transmission.netty;
 
+import com.xk.rpcclient.config.RpcClientProperties;
 import com.xk.rpcclient.handler.RpcResponseHandler;
 import com.xk.rpcclient.transmission.TransClient;
 import com.xk.rpcclient.transmission.common.RequestMetadata;
@@ -47,7 +48,10 @@ public class NettyTransClient implements TransClient {
      */
     private final ChannelCache channelCache;
 
-    public NettyTransClient() {
+    private final RpcClientProperties properties;
+
+    public NettyTransClient(RpcClientProperties properties) {
+        this.properties = properties;
         bootstrap = new Bootstrap();
         eventLoopGroup = new NioEventLoopGroup();
         bootstrap.group(eventLoopGroup)
@@ -56,10 +60,11 @@ public class NettyTransClient implements TransClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        // 加载 SSL/TLS 配置
-                        SslContext sslContext = ClientSslContext.createClientSslContext();
-                        // 在 ChannelPipeline 中添加 SslHandler
-                        ch.pipeline().addLast(sslContext.newHandler(ch.alloc()));
+                        // 根据配置决定是否添加SSL处理器
+                        if (properties.getEnableSsl()) {
+                            SslContext sslContext = ClientSslContext.createClientSslContext();
+                            ch.pipeline().addLast(sslContext.newHandler(ch.alloc()));
+                        }
                         // 超过 15s 内如果没有向服务器写数据，会触发一个 IdleState#WRITE_IDLE 事件
                         ch.pipeline().addLast(new IdleStateHandler(0, 15, 0, TimeUnit.SECONDS));
                         // 添加 粘包拆包 解码器

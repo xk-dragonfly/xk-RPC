@@ -26,6 +26,8 @@ public class RpcClientProperties {
     
     private String retryStrategy;
 
+    private Boolean enableSsl;
+
     public RpcClientProperties() {
         this.loadBalance = "random";
         this.serialization = "HESSIAN";
@@ -34,6 +36,7 @@ public class RpcClientProperties {
         this.registerAddr = "127.0.0.1:2181";
         this.timeout = 5000;
         this.retryStrategy = "randomRetryStrategy";
+        this.enableSsl = false;
     }
     
 }

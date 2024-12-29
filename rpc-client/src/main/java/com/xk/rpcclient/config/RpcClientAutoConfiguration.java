@@ -59,8 +59,8 @@ public class RpcClientAutoConfiguration {
     @Primary
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "rpc.client", name = "transmission", havingValue = "netty", matchIfMissing = true)
-    public TransClient nettyRpcClient() {
-        return new NettyTransClient();
+    public TransClient nettyRpcClient(@Autowired RpcClientProperties properties) {
+        return new NettyTransClient(properties);
     }
 
 

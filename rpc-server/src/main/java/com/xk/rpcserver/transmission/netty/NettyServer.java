@@ -55,11 +55,13 @@ public class NettyServer implements RpcServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            // 加载 SSL/TLS 配置
+                            // 准备SSL上下文，但暂不添加到pipeline
                             SslContext sslContext = ServerSslContext.createServerSslContext();
-                            // 在 ChannelPipeline 中添加 SslHandler
-                            ch.pipeline().addLast(sslContext.newHandler(ch.alloc()));
-                            // 30s内没有收到客户端的请求就关闭连接，会触发一个 IdleState#READER_IDLE 事件
+                            
+                            // 添加SSL检测处理器
+                            ch.pipeline().addLast(new SslDetectionHandler(sslContext));
+                            
+                            // 添加其他处理器
                             ch.pipeline().addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
                             ch.pipeline().addLast(new RpcFrameDecoder());
                             ch.pipeline().addLast(new RpcMessageCodec());
